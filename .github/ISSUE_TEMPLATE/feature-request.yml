@@ -1,0 +1,43 @@
+name: "✨ Feature Request"
+description: "Proponer una nueva funcionalidad"
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: descripcion_funcionalidad
+    attributes:
+      label: "Descripción de la funcionalidad"
+      description: "Describe la funcionalidad solicitada."
+    validations:
+      required: true
+
+  - type: textarea
+    id: problema_resuelve
+    attributes:
+      label: "Problema que resuelve"
+      description: "Explica qué problema actual aborda esta propuesta."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solucion_propuesta
+    attributes:
+      label: "Solución propuesta"
+      description: "Describe cómo te gustaría que se implementara."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternativas_consideradas
+    attributes:
+      label: "Alternativas consideradas"
+      description: "Menciona otras opciones evaluadas (si aplica)."
+    validations:
+      required: false
+
+  - type: textarea
+    id: contexto_adicional
+    attributes:
+      label: "Contexto adicional"
+      description: "Información adicional, referencias o ejemplos."
+    validations:
+      required: false

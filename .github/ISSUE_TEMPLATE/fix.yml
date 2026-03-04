@@ -1,0 +1,43 @@
+name: "🔧 Fix / Corrección"
+description: "Documentar una corrección técnica o de mantenimiento"
+labels: ["fix"]
+body:
+  - type: textarea
+    id: que_corregir
+    attributes:
+      label: "Qué se va a corregir"
+      description: "Describe de forma precisa la corrección a realizar."
+    validations:
+      required: true
+
+  - type: textarea
+    id: por_que_necesaria
+    attributes:
+      label: "Por qué es necesaria la corrección"
+      description: "Explica el motivo técnico o de mantenimiento."
+    validations:
+      required: true
+
+  - type: textarea
+    id: impacto_no_corregir
+    attributes:
+      label: "Impacto de no corregirlo"
+      description: "Detalla consecuencias si no se aplica la corrección."
+    validations:
+      required: true
+
+  - type: textarea
+    id: modulos_afectados
+    attributes:
+      label: "Archivos o módulos afectados"
+      description: "Lista los archivos, capas o módulos impactados."
+    validations:
+      required: true
+
+  - type: textarea
+    id: notas_adicionales
+    attributes:
+      label: "Notas adicionales"
+      description: "Información complementaria para el equipo."
+    validations:
+      required: false

@@ -1,0 +1,60 @@
+name: "🐛 Bug Report"
+description: "Reportar un defecto encontrado"
+labels: ["bug"]
+body:
+  - type: textarea
+    id: descripcion_bug
+    attributes:
+      label: "Descripción del bug"
+      description: "Describe claramente el defecto encontrado."
+    validations:
+      required: true
+
+  - type: textarea
+    id: pasos_reproducir
+    attributes:
+      label: "Pasos para reproducir"
+      description: "Incluye los pasos exactos para reproducir el problema."
+      placeholder: |
+        1. Ir a "..."
+        2. Hacer clic en "..."
+        3. Esperar "..."
+        4. Ver error "..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: comportamiento_esperado
+    attributes:
+      label: "Comportamiento esperado"
+      description: "¿Qué debería ocurrir?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: comportamiento_actual
+    attributes:
+      label: "Comportamiento actual"
+      description: "¿Qué está ocurriendo realmente?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: entorno
+    attributes:
+      label: "Entorno"
+      description: "Incluye SO, versión de Java y navegador."
+      placeholder: |
+        - OS:
+        - Java:
+        - Browser:
+    validations:
+      required: true
+
+  - type: textarea
+    id: capturas_logs
+    attributes:
+      label: "Capturas/Logs"
+      description: "Adjunta capturas de pantalla, stack traces o logs relevantes."
+    validations:
+      required: false
