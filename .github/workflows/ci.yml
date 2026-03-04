@@ -14,6 +14,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # ── Runtime setup ──────────────────────────────────────
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Setup JDK 21
         uses: actions/setup-java@v4
         with:
@@ -21,6 +27,48 @@ jobs:
           java-version: '21'
           cache: maven
 
+      # ── Backend (Express on port 3001) ─────────────────────
+      - name: Install backend dependencies
+        run: npm ci
+        working-directory: backend
+
+      - name: Start backend
+        run: nohup node server.js &
+        working-directory: backend
+
+      # ── Frontend (Vite on port 5173) ───────────────────────
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Start frontend
+        run: nohup npx vite --host &
+        working-directory: frontend
+
+      # ── Wait for services to be ready ──────────────────────
+      - name: Wait for backend (port 3001)
+        run: |
+          echo "Waiting for backend on port 3001..."
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3001/api/quote >/dev/null 2>&1 && break
+            echo "  attempt $i/30 — retrying in 2s..."
+            sleep 2
+          done
+          curl -sf http://localhost:3001/api/quote >/dev/null 2>&1 || { echo "Backend failed to start"; exit 1; }
+          echo "Backend is up!"
+
+      - name: Wait for frontend (port 5173)
+        run: |
+          echo "Waiting for frontend on port 5173..."
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:5173/ >/dev/null 2>&1 && break
+            echo "  attempt $i/30 — retrying in 2s..."
+            sleep 2
+          done
+          curl -sf http://localhost:5173/ >/dev/null 2>&1 || { echo "Frontend failed to start"; exit 1; }
+          echo "Frontend is up!"
+
+      # ── Run Selenium E2E tests ─────────────────────────────
       - name: Build and test automation suite
         run: mvn clean test
         working-directory: automation-suite
