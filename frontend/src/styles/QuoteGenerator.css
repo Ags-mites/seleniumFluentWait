@@ -1,0 +1,150 @@
+.quote-generator-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+  padding: 2rem;
+}
+
+.quote-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #667eea;
+}
+
+.quote-card h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.scenario-description {
+  color: #999;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.btn-generate {
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+.btn-generate:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-generate:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-generate:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.status-message {
+  animation: slideIn 0.3s ease;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  border-radius: 4px;
+  font-weight: 500;
+  color: #1976d2;
+  min-height: 24px;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.quote-result {
+  animation: fadeIn 0.4s ease;
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border-radius: 6px;
+  font-weight: 500;
+  min-height: 24px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.quote-result.success {
+  background: #e8f5e9;
+  border-left: 4px solid #4caf50;
+  color: #1b5e20;
+}
+
+.quote-result.success strong {
+  color: #2e7d32;
+}
+
+.quote-result.error {
+  background: #ffebee;
+  border-left: 4px solid #f44336;
+  color: #b71c1c;
+}
+
+.quote-result.incomplete {
+  background: #fff3e0;
+  border-left: 4px solid #ff9800;
+  color: #e65100;
+}
+
+.quote-result.volatile {
+  background: #f3e5f5;
+  border-left: 4px solid #9c27b0;
+  color: #4a148c;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: 768px) {
+  .quote-card {
+    padding: 1.5rem;
+  }
+
+  .quote-card h2 {
+    font-size: 1.25rem;
+  }
+}

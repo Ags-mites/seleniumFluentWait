@@ -1,0 +1,34 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+}
+
+.main-content {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.footer {
+  background: #f0f0f0;
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid #ddd;
+  color: #666;
+  margin-top: auto;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 2rem 1rem;
+  }
+}

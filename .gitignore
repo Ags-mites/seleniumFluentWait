@@ -23,3 +23,15 @@ dist-ssr
 *.sln
 *.sw?
 *.md
+
+# Java / Maven
+automation-suite/target/
+
+# Selenium / test artifacts
+automation-suite/test-results/
+automation-suite/screenshots/
+
+# Allure artifacts
+automation-suite/allure-results/
+automation-suite/allure-report/
+automation-suite/.allure/

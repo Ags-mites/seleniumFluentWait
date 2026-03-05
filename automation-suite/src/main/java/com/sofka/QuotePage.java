@@ -9,16 +9,17 @@ import com.sofka.utils.CustomConditions;
 public class QuotePage {
     private final WebDriver driver;
 
-    // Localizador del elemento que muestra el estado de la cotización
     private final By quoteStatusLocator = By.id("quote-status");
+    private final By generateButtonLocator = By.id("generate-quote-btn");
 
     public QuotePage(WebDriver driver) {
         this.driver = driver;
     }
 
-    /**
-     * Espera a que el botón de generación vuelva a estar habilitado.
-     */
+    public void clickGenerateButton() {
+        driver.findElement(generateButtonLocator).click();
+    }
+
     public void waitForButtonToBeEnabled() {
         FluentWait<WebDriver> wait = new FluentWait<>(driver)
             .withTimeout(Duration.ofSeconds(10))
@@ -26,15 +27,11 @@ public class QuotePage {
             .ignoring(NoSuchElementException.class);
 
         wait.until(d -> {
-            WebElement btn = d.findElement(By.id("generate-quote-btn"));
+            WebElement btn = d.findElement(generateButtonLocator);
             return btn.isEnabled(); 
         });
     }
 
-    /**
-     * Espera a que aparezca un mensaje de estado intermedio específico.
-     * @param expectedMessage El texto parcial que se espera ver (ej: "Conectando...")
-     */
     public void waitForIntermediateState(String expectedMessage) {
         FluentWait<WebDriver> wait = new FluentWait<>(driver)
             .withTimeout(Duration.ofSeconds(5))
@@ -54,6 +51,18 @@ public class QuotePage {
 
     public void waitForQuoteToComplete() {
         FluentWait<WebDriver> wait = new FluentWait<>(driver)
+            .withTimeout(Duration.ofSeconds(15))
+            .pollingEvery(Duration.ofMillis(200))
+            .ignoring(NoSuchElementException.class);
+
+        wait.until(driver -> {
+            WebElement status = driver.findElement(quoteStatusLocator);
+            return status.getText().contains("Cotización Total:");
+        });
+    }
+
+    public void waitForQuoteToCompleteRobust() {
+        FluentWait<WebDriver> wait = new FluentWait<>(driver)
             .withTimeout(Duration.ofSeconds(30))
             .pollingEvery(Duration.ofMillis(300))
             .ignoring(NoSuchElementException.class)
@@ -63,5 +72,22 @@ public class QuotePage {
             WebElement status = driver.findElement(quoteStatusLocator);
             return status.getText().contains("Cotización Total:");
         });
+    }
+
+    public boolean isQuoteStatusPresent() {
+        try {
+            driver.findElement(quoteStatusLocator);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public String getQuoteStatusText() {
+        try {
+            return driver.findElement(quoteStatusLocator).getText();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 }
