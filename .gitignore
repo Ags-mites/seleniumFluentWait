@@ -22,7 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-*.md
 
 # Java / Maven
 automation-suite/target/
