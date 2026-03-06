@@ -39,7 +39,7 @@ export default function QuoteGeneratorPassing() {
 
     const fetchQuote = async () => {
         try {
-            const res = await fetch('http://localhost:3001/api/quote');
+            const res = await fetch('http://localhost:3000/api/quote');
             if (!res.ok) throw new Error('Error en la respuesta del servidor');
             const data = await res.json();
             setQuote(data);

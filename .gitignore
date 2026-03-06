@@ -27,6 +27,12 @@ dist-ssr
 # Java / Maven
 automation-suite/target/
 
+# Gradle
+automation-suite/.gradle/
+automation-suite/build/
+automation-suite/out/
+automation-suite/bin/
+
 # Selenium / test artifacts
 automation-suite/test-results/
 automation-suite/screenshots/

@@ -1,93 +1,76 @@
 package com.sofka;
 
-import org.openqa.selenium.*;
+import net.serenitybdd.core.pages.PageObject;
+import net.serenitybdd.core.pages.WebElementFacade;
+import net.thucydides.core.annotations.Step;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import java.time.Duration;
-import java.util.function.Function;
-import com.sofka.utils.CustomConditions;
 
-public class QuotePage {
-    private final WebDriver driver;
+import static com.sofka.utils.CustomConditions.textDisappears;
 
-    private final By quoteStatusLocator = By.id("quote-status");
+public class QuotePage extends PageObject {
+
     private final By generateButtonLocator = By.id("generate-quote-btn");
+    private final By quoteStatusLocator = By.id("quote-status");
+    private final By statusMessageLocator = By.className("status-message");
 
-    public QuotePage(WebDriver driver) {
-        this.driver = driver;
-    }
-
+    @Step("Hacer clic en botón generar")
     public void clickGenerateButton() {
-        driver.findElement(generateButtonLocator).click();
+        $(generateButtonLocator).click();
     }
 
+    @Step("Esperar que el botón esté habilitado")
     public void waitForButtonToBeEnabled() {
-        FluentWait<WebDriver> wait = new FluentWait<>(driver)
-            .withTimeout(Duration.ofSeconds(10))
-            .pollingEvery(Duration.ofMillis(200))
-            .ignoring(NoSuchElementException.class);
-
-        wait.until(d -> {
-            WebElement btn = d.findElement(generateButtonLocator);
-            return btn.isEnabled(); 
-        });
+        FluentWait<WebDriver> wait = createWait(10, 200);
+        wait.until(ExpectedConditions.elementToBeClickable(generateButtonLocator));
     }
 
+    @Step("Esperar mensaje intermedio: {0}")
     public void waitForIntermediateState(String expectedMessage) {
-        FluentWait<WebDriver> wait = new FluentWait<>(driver)
-            .withTimeout(Duration.ofSeconds(5))
-            .pollingEvery(Duration.ofMillis(50))
-             .ignoring(NoSuchElementException.class);
-
-        wait.until(d -> d.getPageSource().contains(expectedMessage));
+        FluentWait<WebDriver> wait = createWait(15, 100);
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(
+            statusMessageLocator, expectedMessage));
     }
 
+    @Step("Esperar a que desaparezca mensaje: {0}")
     public void waitForStateToDisappear(String message) {
-        FluentWait<WebDriver> wait = new FluentWait<>(driver)
-             .withTimeout(Duration.ofSeconds(10))
-             .pollingEvery(Duration.ofMillis(200));
-
-        wait.until(CustomConditions.textDisappears(message));
+        FluentWait<WebDriver> wait = createWait(10, 100);
+        wait.until(textDisappears(statusMessageLocator, message));
     }
 
-    public void waitForQuoteToComplete() {
-        FluentWait<WebDriver> wait = new FluentWait<>(driver)
-            .withTimeout(Duration.ofSeconds(15))
-            .pollingEvery(Duration.ofMillis(200))
-            .ignoring(NoSuchElementException.class);
-
-        wait.until(driver -> {
-            WebElement status = driver.findElement(quoteStatusLocator);
-            return status.getText().contains("Cotización Total:");
-        });
-    }
-
+    @Step("Esperar cotización completa (robusto)")
     public void waitForQuoteToCompleteRobust() {
-        FluentWait<WebDriver> wait = new FluentWait<>(driver)
-            .withTimeout(Duration.ofSeconds(30))
-            .pollingEvery(Duration.ofMillis(300))
+        FluentWait<WebDriver> wait = createWait(30, 300);
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(
+            quoteStatusLocator, "Cotización Total:"));
+    }
+
+    @Step("Verificar que elemento de cotización está presente")
+    public boolean isQuoteStatusPresent() {
+        return $(quoteStatusLocator).isPresent();
+    }
+
+    @Step("Obtener texto de cotización")
+    public String getQuoteStatusText() {
+        WebElementFacade statusElement = $(quoteStatusLocator);
+        FluentWait<WebDriver> wait = createWait(10, 200);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(quoteStatusLocator));
+        if (statusElement.isPresent()) {
+            return statusElement.getText();
+        }
+        return null;
+    }
+
+    private FluentWait<WebDriver> createWait(long timeoutSeconds, long pollingMillis) {
+        return new FluentWait<>(getDriver())
+            .withTimeout(Duration.ofSeconds(timeoutSeconds))
+            .pollingEvery(Duration.ofMillis(pollingMillis))
             .ignoring(NoSuchElementException.class)
             .ignoring(StaleElementReferenceException.class);
-
-        wait.until(driver -> {
-            WebElement status = driver.findElement(quoteStatusLocator);
-            return status.getText().contains("Cotización Total:");
-        });
-    }
-
-    public boolean isQuoteStatusPresent() {
-        try {
-            driver.findElement(quoteStatusLocator);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
-    }
-
-    public String getQuoteStatusText() {
-        try {
-            return driver.findElement(quoteStatusLocator).getText();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
     }
 }

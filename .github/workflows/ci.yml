@@ -27,7 +27,7 @@ jobs:
           java-version: '21'
           cache: maven
 
-      # ── Backend (Express on port 3001) ─────────────────────
+      # ── Backend (Express on port 3000) ─────────────────────
       - name: Install backend dependencies
         run: npm ci
         working-directory: backend
@@ -46,15 +46,15 @@ jobs:
         working-directory: frontend
 
       # ── Wait for services to be ready ──────────────────────
-      - name: Wait for backend (port 3001)
+      - name: Wait for backend (port 3000)
         run: |
-          echo "Waiting for backend on port 3001..."
+          echo "Waiting for backend on port 3000..."
           for i in $(seq 1 30); do
-            curl -sf http://localhost:3001/api/quote >/dev/null 2>&1 && break
+            curl -sf http://localhost:3000/api/quote >/dev/null 2>&1 && break
             echo "  attempt $i/30 — retrying in 2s..."
             sleep 2
           done
-          curl -sf http://localhost:3001/api/quote >/dev/null 2>&1 || { echo "Backend failed to start"; exit 1; }
+          curl -sf http://localhost:3000/api/quote >/dev/null 2>&1 || { echo "Backend failed to start"; exit 1; }
           echo "Backend is up!"
 
       - name: Wait for frontend (port 5173)

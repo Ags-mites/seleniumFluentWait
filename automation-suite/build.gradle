@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.sofka'
+version = '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'net.serenity-bdd:serenity-core:3.9.8'
+    implementation 'net.serenity-bdd:serenity-junit:3.9.8'
+    implementation 'net.serenity-bdd:serenity-screenplay:3.9.8'
+    implementation 'net.serenity-bdd:serenity-screenplay-webdriver:3.9.8'
+    implementation 'net.serenity-bdd:serenity-assertions:3.9.8'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.18.1'
+    implementation 'io.github.bonigarcia:webdrivermanager:5.7.0'
+    testImplementation 'junit:junit:4.13.2'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.10.1'
+    testImplementation 'ch.qos.logback:logback-classic:1.5.18'
+}
+
+test {
+    useJUnit()
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
